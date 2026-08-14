@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editable Portfolio</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <!-- Link to external CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ===== EDIT PANEL ===== -->
+  <div class="edit-panel">
+    <label for="avatarUpload"><i class="fas fa-image"></i> Upload Photo</label>
+    <input type="file" id="avatarUpload" accept="image/*" />
+
+    <label for="nameInput"><i class="fas fa-user-edit"></i> Name</label>
+    <input type="text" id="nameInput" value="Alex" placeholder="Your name" />
+
+    <label for="bioInput"><i class="fas fa-paragraph"></i> Bio</label>
+    <textarea id="bioInput" rows="1" placeholder="Short bio">I build simple, clean & responsive websites. This is my portfolio — feel free to explore.</textarea>
+
+    <button class="btn-save" id="saveBtn"><i class="fas fa-save"></i> Save</button>
+    <span class="hint"><i class="fas fa-undo-alt"></i> edits auto‑save on click</span>
+  </div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <div class="logo">Port<span>folio</span></div>
+    <div class="nav-links">
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="heroSection">
+    <div class="hero-content">
+      <span class="badge"><i class="fas fa-code" style="margin-right: 6px;"></i> front-end dev</span>
+      <h1>Hi, I'm <span class="highlight" id="displayName">Alex</span></h1>
+      <p id="displayBio">I build simple, clean & responsive websites. This is my portfolio — feel free to explore.</p>
+      <div>
+        <a href="#projects" class="btn"><i class="fas fa-arrow-right" style="margin-right: 6px;"></i>See work</a>
+        <a href="#contact" class="btn btn-outline"><i class="fas fa-envelope"></i> Contact</a>
+      </div>
+    </div>
+    <div class="hero-avatar">
+      <div class="avatar-wrapper" id="avatarWrapper">
+        <!-- placeholder (fontawesome icon) will be replaced by image -->
+        <i class="fas fa-user avatar-placeholder" id="avatarIcon"></i>
+        <img id="avatarImage" style="display:none;" alt="avatar" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROJECTS ===== -->
+  <h2 class="section-title" id="projects"><i class="fas fa-laptop-code"></i> Projects</h2>
+  <hr />
+  <div class="projects-grid" id="projectsGrid">
+    <!-- card 1 -->
+    <div class="project-card" data-index="0">
+      <i class="fas fa-cloud-sun"></i>
+      <h3 contenteditable="true" class="editable-title">Weather dashboard</h3>
+      <p contenteditable="true" class="editable-desc">Live weather & 5‑day forecast with clean cards.</p>
+      <span class="project-tag" contenteditable="true">HTML · CSS · JS</span>
+    </div>
+    <!-- card 2 -->
+    <div class="project-card" data-index="1">
+      <i class="fas fa-pencil-alt"></i>
+      <h3 contenteditable="true" class="editable-title">Task manager</h3>
+      <p contenteditable="true" class="editable-desc">Minimalist to‑do app with local storage.</p>
+      <span class="project-tag" contenteditable="true">React · Tailwind</span>
+    </div>
+    <!-- card 3 -->
+    <div class="project-card" data-index="2">
+      <i class="fas fa-store"></i>
+      <h3 contenteditable="true" class="editable-title">Shop landing</h3>
+      <p contenteditable="true" class="editable-desc">Product showcase with responsive grid.</p>
+      <span class="project-tag" contenteditable="true">HTML · CSS</span>
+    </div>
+  </div>
+
+  <!-- ===== CONTACT (editable) ===== -->
+  <h2 class="section-title" id="contact"><i class="fas fa-paper-plane"></i> Let's connect</h2>
+  <hr />
+  <div class="contact-links" id="contactLinks">
+    <a href="#" contenteditable="true"><i class="fas fa-envelope"></i> alex.dev@email.com</a>
+    <a href="#" contenteditable="true"><i class="fab fa-github"></i> github/alexdev</a>
+    <a href="#" contenteditable="true"><i class="fab fa-linkedin"></i> linkedin/in/alex</a>
+    <a href="#" contenteditable="true"><i class="fab fa-twitter"></i> @alex_codes</a>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <div class="footer-note">
+    <i class="fas fa-code"></i> built with HTML & CSS · <span contenteditable="true" id="footerYear">2026</span>
+  </div>
+
+</div>
+
+<script>
+  (function() {
+    // ----- DOM refs -----
+    const avatarUpload = document.getElementById('avatarUpload');
+    const avatarImage = document.getElementById('avatarImage');
+    const avatarIcon = document.getElementById('avatarIcon');
+    const avatarWrapper = document.getElementById('avatarWrapper');
+
+    const nameInput = document.getElementById('nameInput');
+    const displayName = document.getElementById('displayName');
+    const bioInput = document.getElementById('bioInput');
+    const displayBio = document.getElementById('displayBio');
+
+    const saveBtn = document.getElementById('saveBtn');
+
+    // ----- helper: update hero from inputs -----
+    function updateHeroFromInputs() {
+      displayName.textContent = nameInput.value.trim() || 'Alex';
+      displayBio.textContent = bioInput.value.trim() || 'I build simple, clean & responsive websites.';
+    }
+
+    // ----- avatar upload -----
+    avatarUpload.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        const dataUrl = ev.target.result;
+        avatarImage.src = dataUrl;
+        avatarImage.style.display = 'block';
+        avatarIcon.style.display = 'none';
+        // save to localStorage
+        localStorage.setItem('portfolio_avatar', dataUrl);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // ----- load saved avatar -----
+    function loadSavedAvatar() {
+      const saved = localStorage.getItem('portfolio_avatar');
+      if (saved) {
+        avatarImage.src = saved;
+        avatarImage.style.display = 'block';
+        avatarIcon.style.display = 'none';
+      }
+    }
+
+    // ----- load saved text fields -----
+    function loadSavedText() {
+      const savedName = localStorage.getItem('portfolio_name');
+      const savedBio = localStorage.getItem('portfolio_bio');
+      if (savedName) {
+        nameInput.value = savedName;
+        displayName.textContent = savedName;
+      }
+      if (savedBio) {
+        bioInput.value = savedBio;
+        displayBio.textContent = savedBio;
+      }
+      // project cards (titles, desc, tags) – we store as JSON
+      const savedProjects = localStorage.getItem('portfolio_projects');
+      if (savedProjects) {
+        try {
+          const cards = document.querySelectorAll('.project-card');
+          const data = JSON.parse(savedProjects);
+          data.forEach((item, idx) => {
+            if (idx < cards.length) {
+              const card = cards[idx];
+              const title = card.querySelector('.editable-title');
+              const desc = card.querySelector('.editable-desc');
+              const tag = card.querySelector('.project-tag');
+              if (title) title.textContent = item.title || title.textContent;
+              if (desc) desc.textContent = item.desc || desc.textContent;
+              if (tag) tag.textContent = item.tag || tag.textContent;
+            }
+          });
+        } catch (e) {}
+      }
+      // contact links
+      const savedContacts = localStorage.getItem('portfolio_contacts');
+      if (savedContacts) {
+        try {
+          const links = document.querySelectorAll('#contactLinks a');
+          const data = JSON.parse(savedContacts);
+          data.forEach((text, idx) => {
+            if (idx < links.length) {
+              // preserve the icon inside: we replace only text after icon
+              const link = links[idx];
+              const icon = link.querySelector('i');
+              if (icon) {
+                // keep icon, update text node
+                const textNode = link.childNodes[link.childNodes.length - 1];
+                if (textNode && textNode.nodeType === 3) {
+                  textNode.textContent = ' ' + text; // space before text
+                } else {
+                  // fallback: set innerHTML with icon + text
+                  link.innerHTML = icon.outerHTML + ' ' + text;
+                }
+              }
+            }
+          });
+        } catch (e) {}
+      }
+      // footer year
+      const savedYear = localStorage.getItem('portfolio_year');
+      if (savedYear) {
+        document.getElementById('footerYear').textContent = savedYear;
+      }
+    }
+
+    // ----- save all (called on button click) -----
+    function saveAll() {
+      // name & bio
+      localStorage.setItem('portfolio_name', nameInput.value.trim() || 'Alex');
+      localStorage.setItem('portfolio_bio', bioInput.value.trim() || 'I build simple, clean & responsive websites.');
+      updateHeroFromInputs();
+
+      // projects
+      const cards = document.querySelectorAll('.project-card');
+      const projectData = [];
+      cards.forEach(card => {
+        const title = card.querySelector('.editable-title');
+        const desc = card.querySelector('.editable-desc');
+        const tag = card.querySelector('.project-tag');
+        projectData.push({
+          title: title ? title.textContent.trim() : '',
+          desc: desc ? desc.textContent.trim() : '',
+          tag: tag ? tag.textContent.trim() : ''
+        });
+      });
+      localStorage.setItem('portfolio_projects', JSON.stringify(projectData));
+
+      // contacts
+      const links = document.querySelectorAll('#contactLinks a');
+      const contactTexts = [];
+      links.forEach(link => {
+        // get text after icon
+        const icon = link.querySelector('i');
+        let text = '';
+        if (icon) {
+          // get all child nodes, filter text nodes
+          link.childNodes.forEach(node => {
+            if (node.nodeType === 3) { // text node
+              text += node.textContent;
+            }
+          });
+          text = text.trim();
+        } else {
+          text = link.textContent.trim();
+        }
+        contactTexts.push(text);
+      });
+      localStorage.setItem('portfolio_contacts', JSON.stringify(contactTexts));
+
+      // footer year
+      const yearEl = document.getElementById('footerYear');
+      localStorage.setItem('portfolio_year', yearEl.textContent.trim() || '2026');
+
+      // avatar is saved on upload
+
+      // subtle feedback
+      saveBtn.textContent = '✓ Saved!';
+      setTimeout(() => { saveBtn.innerHTML = '<i class="fas fa-save"></i> Save'; }, 1200);
+    }
+
+    // ----- init -----
+    loadSavedAvatar();
+    loadSavedText();
+    // sync hero from inputs (in case saved text didn't load)
+    updateHeroFromInputs();
+
+    // ----- event listeners -----
+    saveBtn.addEventListener('click', saveAll);
+
+    // also save on Enter in inputs (convenience)
+    nameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { e.preventDefault(); saveAll(); } });
+    bioInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { e.preventDefault(); saveAll(); } });
+
+    // if user edits contenteditable fields directly, we can still save via button.
+    // also auto-save when leaving fields? we keep it explicit via button.
+
+    // extra: if user uploads avatar, we auto-save it (already in change event)
+    // but we also want to update the save feedback – not needed.
+
+    // For contenteditable projects, we want to save them too when save is clicked.
+    // Already covered in saveAll.
+
+    console.log('✨ Editable portfolio ready! Upload photo, edit text, click Save.');
+  })();
+</script>
+
+</body>
+</html>
