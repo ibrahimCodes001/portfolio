@@ -162,6 +162,13 @@ nav {
     box-shadow: 0 20px 60px rgba(108, 92, 231, 0.3);
 }
 
+.profile-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
 /* Section Titles */
 section {
     padding: 100px 0;
@@ -249,8 +256,11 @@ section {
     box-shadow: 0 20px 40px rgba(108, 92, 231, 0.15);
 }
 
-.service-icon {
-    font-size: 48px;
+.service-card img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 12px;
     margin-bottom: 20px;
 }
 
@@ -289,14 +299,10 @@ section {
     box-shadow: 0 20px 40px rgba(108, 92, 231, 0.15);
 }
 
-.portfolio-image {
+.portfolio-item img {
+    width: 100%;
     height: 200px;
-    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 60px;
-    color: #fff;
+    object-fit: cover;
 }
 
 .portfolio-info {
@@ -396,7 +402,103 @@ footer {
     padding: 30px 0;
 }
 
-/* Responsive */
+/* ===== VLOG SECTION ===== */
+.vlog-section {
+    background: #f8f9fa;
+    padding: 80px 0 100px;
+}
+
+.vlog-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.vlog-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    color: #fff;
+    padding: 8px 24px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 15px;
+}
+
+.vlog-subtitle {
+    color: #636e72;
+    font-size: 18px;
+    margin-top: -30px;
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.video-card {
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.video-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(108, 92, 231, 0.15);
+}
+
+.video-wrapper {
+    position: relative;
+    background: #000;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    overflow: hidden;
+}
+
+.video-wrapper video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #1a1a2e;
+}
+
+.video-wrapper video::-webkit-media-controls {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.video-info {
+    padding: 18px 20px 22px;
+}
+
+.video-info h4 {
+    font-size: 17px;
+    color: #2d3436;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.video-info p {
+    font-size: 14px;
+    color: #636e72;
+    margin: 0;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .video-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+/* Mobile */
 @media (max-width: 768px) {
     .hero-content {
         grid-template-columns: 1fr;
@@ -437,38 +539,46 @@ footer {
     section {
         padding: 60px 0;
     }
+
+    /* Vlog mobile */
+    .vlog-section {
+        padding: 50px 0 60px;
+    }
+    .vlog-header h2 {
+        font-size: 28px;
+    }
+    .vlog-subtitle {
+        font-size: 15px;
+        margin-top: -20px;
+    }
+    .video-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        padding: 0 10px;
+    }
+    .video-info {
+        padding: 12px 14px 16px;
+    }
+    .video-info h4 {
+        font-size: 14px;
+    }
+    .video-info p {
+        font-size: 12px;
+    }
 }
 
-/* Make everything responsive */
-* {
-    max-width: 100%;
-    box-sizing: border-box;
-}
-
-/* Mobile viewport meta tag - add to your HTML <head> */
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-/* Common mobile fixes */
-@media (max-width: 768px) {
-    body {
-        font-size: 16px;
-        padding: 10px;
+/* Small mobile */
+@media (max-width: 480px) {
+    .video-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        max-width: 380px;
     }
-    
-    /* Make images flexible */
-    img, video {
-        max-width: 100%;
-        height: auto;
+    .vlog-header h2 {
+        font-size: 24px;
     }
-    
-    /* Stack flex items vertically */
-    .flex-container {
-        flex-direction: column;
-    }
-    
-    /* Adjust navigation for mobile */
-    nav ul {
-        flex-direction: column;
-        gap: 10px;
+    .vlog-badge {
+        font-size: 12px;
+        padding: 6px 18px;
     }
 }
